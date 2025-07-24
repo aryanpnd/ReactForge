@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { apiClient } from '@/lib/config/apiConfig'
+import axios from 'axios'
 
 interface User {
   id: string;
@@ -18,7 +20,7 @@ interface AuthState {
 
 interface AuthActions {
   login: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   setLoading: (loading: boolean) => void;
 }
 
@@ -29,7 +31,32 @@ const useAuthStore = create<AuthState & AuthActions>()(
       user: null,
       isLoading: false,
       login: (user) => set({ isAuthenticated: true, user, isLoading: false }),
-      logout: () => set({ isAuthenticated: false, user: null, isLoading: false }),
+      logout: async () => {
+        try {
+          set({ isLoading: true });
+          
+          // Call the backend logout API
+          await apiClient.post('/api/auth/logout');
+          
+          // Clear local state
+          set({ isAuthenticated: false, user: null, isLoading: false });
+          
+          // Clear any stored tokens
+          localStorage.removeItem('authToken');
+          
+        } catch (error) {
+          console.error('Logout error:', error);
+          
+          // Even if API call fails, clear local state
+          set({ isAuthenticated: false, user: null, isLoading: false });
+          localStorage.removeItem('authToken');
+          
+          if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Logout failed');
+          }
+          throw error;
+        }
+      },
       setLoading: (isLoading) => set({ isLoading }),
     }),
     {

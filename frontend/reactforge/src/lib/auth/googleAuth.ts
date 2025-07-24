@@ -73,7 +73,6 @@ export const initGoogleAuth = (onSuccess: (user: User) => void, onError: (error:
     }
   };
 
-  google.accounts.id.prompt()
 
   if (window.google?.accounts?.id) {
     window.google.accounts.id.initialize({

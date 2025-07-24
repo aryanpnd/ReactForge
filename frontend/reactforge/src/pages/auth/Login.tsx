@@ -177,11 +177,8 @@ export default function AuthPage() {
                 <div className="flex justify-center lg:justify-end">
                     <div className="w-full max-w-md">
                         <Card className="border border-white/10 shadow-2xl bg-gray-900/80 backdrop-blur-xl">
-                            <CardHeader className="space-y-1 pb-6">
-                                <CardTitle className="text-2xl text-center text-white">Welcome back</CardTitle>
-                                <CardDescription className="text-center text-gray-400">
-                                    Sign in to your ReactForge workspace
-                                </CardDescription>
+                            <CardHeader className="space-y-1">
+                                <CardTitle className="text-3xl text-center text-white">Welcome back</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 {error && (

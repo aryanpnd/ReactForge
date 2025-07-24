@@ -72,7 +72,7 @@ export const validate = (schema: Joi.ObjectSchema) => {
 
             return res.status(400).json({
                 success: false,
-                message: 'Validation failed',
+                message: 'Validation failed - ' + errors.map(err => err.message).join(', '),
                 errors,
             });
         }
