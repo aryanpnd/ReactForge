@@ -1,4 +1,6 @@
 import { User } from '@/store/authStore';
+import { apiClient } from '@/lib/config/apiConfig';
+import axios from 'axios';
 
 const GOOGLE_CLIENT_ID = "1037655663343-j288fouvkjleq7ncr9sgdvf6qn7tr37u.apps.googleusercontent.com";
 
@@ -23,27 +25,20 @@ const decodeJWT = (token: string): any => {
 // Send Google auth data to backend
 const sendGoogleAuthToBackend = async (userInfo: any) => {
   try {
-    const response = await fetch('/api/auth/google', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        googleId: userInfo.sub,
-        email: userInfo.email,
-        firstName: userInfo.given_name || '',
-        lastName: userInfo.family_name || '',
-        avatar: userInfo.picture,
-      }),
+    const response = await apiClient.post('/api/auth/google', {
+      googleId: userInfo.sub,
+      email: userInfo.email,
+      firstName: userInfo.given_name || '',
+      lastName: userInfo.family_name || '',
+      avatar: userInfo.picture,
     });
 
-    if (!response.ok) {
-      throw new Error('Google authentication failed');
-    }
-
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error('Backend Google auth error:', error);
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Google authentication failed');
+    }
     throw error;
   }
 };

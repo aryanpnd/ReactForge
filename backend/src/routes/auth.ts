@@ -31,22 +31,22 @@ const loginLimiter = rateLimit({
 
 // Public routes (guest only)
 router.post('/signup',
-    authLimiter,
-    requireGuest,
+    // authLimiter,
+    // requireGuest,
     validate(signupSchema),
     authController.signup
 );
 
 router.post('/login',
-    loginLimiter,
-    requireGuest,
+    // loginLimiter,
+    // requireGuest,
     validate(loginSchema),
     authController.login
 );
 
 router.post('/google',
-    authLimiter,
-    requireGuest,
+    // authLimiter,
+    // requireGuest,
     validate(googleAuthSchema),
     authController.googleAuth
 );

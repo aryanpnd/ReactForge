@@ -1,4 +1,7 @@
 import { OAuth2Client } from 'google-auth-library';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class GoogleAuthService {
     private client: OAuth2Client;

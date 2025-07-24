@@ -108,15 +108,6 @@ export default function AuthPage() {
 
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
-            toast.error('Passwords do not match', {
-                duration: 3000,
-                position: 'top-center',
-                style: {
-                    background: '#f8d7da',
-                    color: '#721c24',
-                    border: '1px solid #f5c6cb',
-                },
-            });
             setIsLoading(false);
             return;
         }

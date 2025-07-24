@@ -28,6 +28,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
     // Attach user to request object
     req.user = req.session.user;
     next();
+    return;
 };
 
 // Middleware to check if user is already authenticated (for login/signup routes)
@@ -40,4 +41,5 @@ export const requireGuest = (req: Request, res: Response, next: NextFunction) =>
     }
 
     next();
+    return;
 };

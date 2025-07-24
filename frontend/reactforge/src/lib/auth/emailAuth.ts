@@ -1,4 +1,6 @@
 import { User } from '@/store/authStore';
+import { apiClient } from '@/lib/config/apiConfig';
+import axios from 'axios';
 
 interface LoginData {
     email: string;
@@ -15,31 +17,21 @@ interface SignupData {
 // Email login
 export const loginWithEmail = async (data: LoginData): Promise<User> => {
     try {
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Login failed');
-        }
-
-        const result = await response.json();
+        const response = await apiClient.post('/api/auth/login', data);
 
         return {
-            id: result.user.id,
-            email: result.user.email,
-            firstName: result.user.firstName,
-            lastName: result.user.lastName,
-            avatar: result.user.avatar,
+            id: response.data.user.id,
+            email: response.data.user.email,
+            firstName: response.data.user.firstName,
+            lastName: response.data.user.lastName,
+            avatar: response.data.user.avatar,
             provider: 'email'
         };
     } catch (error) {
         console.error('Email login error:', error);
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Login failed');
+        }
         throw error;
     }
 };
@@ -47,31 +39,21 @@ export const loginWithEmail = async (data: LoginData): Promise<User> => {
 // Email signup
 export const signupWithEmail = async (data: SignupData): Promise<User> => {
     try {
-        const response = await fetch('/api/auth/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Signup failed');
-        }
-
-        const result = await response.json();
+        const response = await apiClient.post('/api/auth/signup', data);
 
         return {
-            id: result.user.id,
-            email: result.user.email,
-            firstName: result.user.firstName,
-            lastName: result.user.lastName,
-            avatar: result.user.avatar,
+            id: response.data.user.id,
+            email: response.data.user.email,
+            firstName: response.data.user.firstName,
+            lastName: response.data.user.lastName,
+            avatar: response.data.user.avatar,
             provider: 'email'
         };
     } catch (error) {
         console.error('Email signup error:', error);
+        if (axios.isAxiosError(error)) {
+            throw new Error(error.response?.data?.message || 'Signup failed');
+        }
         throw error;
     }
 };

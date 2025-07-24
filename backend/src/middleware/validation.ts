@@ -80,5 +80,6 @@ export const validate = (schema: Joi.ObjectSchema) => {
         // Replace req.body with validated and sanitized data
         req.body = value;
         next();
+        return;
     };
 };

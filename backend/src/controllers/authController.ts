@@ -41,14 +41,14 @@ export class AuthController {
                 provider: user.provider,
             };
 
-            res.status(201).json({
+            return res.status(201).json({
                 success: true,
                 message: 'Account created successfully',
                 user: req.session.user,
             });
         } catch (error) {
             console.error('Signup error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
             });
@@ -91,14 +91,14 @@ export class AuthController {
                 provider: user.provider,
             };
 
-            res.json({
+            return res.json({
                 success: true,
                 message: 'Login successful',
                 user: req.session.user,
             });
         } catch (error) {
             console.error('Login error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
             });
@@ -170,14 +170,14 @@ export class AuthController {
                 provider: user.provider,
             };
 
-            res.json({
+            return res.json({
                 success: true,
                 message: 'Google authentication successful',
                 user: req.session.user,
             });
         } catch (error) {
             console.error('Google auth error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Google authentication failed',
             });
@@ -189,7 +189,7 @@ export class AuthController {
      */
     async logout(req: Request, res: Response) {
         try {
-            req.session.destroy((err) => {
+            return req.session.destroy((err) => {
                 if (err) {
                     console.error('Session destroy error:', err);
                     return res.status(500).json({
@@ -199,14 +199,14 @@ export class AuthController {
                 }
 
                 res.clearCookie('reactforge.sid');
-                res.json({
+                return res.json({
                     success: true,
                     message: 'Logout successful',
                 });
             });
         } catch (error) {
             console.error('Logout error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
             });
@@ -225,13 +225,13 @@ export class AuthController {
                 });
             }
 
-            res.json({
+            return res.json({
                 success: true,
                 user: req.session.user,
             });
         } catch (error) {
             console.error('Me route error:', error);
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: 'Internal server error',
             });
